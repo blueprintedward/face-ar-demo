@@ -90,24 +90,41 @@
     }
 
     async function initFaceLandmarker() {
-      const vision = await FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
-      );
-      for (const delegate of ["GPU", "CPU"]) {
+      setStatus("載入面部追蹤模型…");
+      // 用本機托管的 .task，避開 Android 連不上 storage.googleapis.com
+      const modelRes = await fetch("face_landmarker.task");
+      if (!modelRes.ok) throw new Error("無法下載 face_landmarker.task (" + modelRes.status + ")");
+      const modelBuffer = await modelRes.arrayBuffer();
+
+      const wasmBases = [
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm",
+        "https://unpkg.com/@mediapipe/tasks-vision@0.10.14/wasm",
+      ];
+
+      let lastErr = null;
+      for (const wasm of wasmBases) {
         try {
-          return await FaceLandmarker.createFromOptions(vision, {
-            baseOptions: {
-              modelAssetPath:
-                "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
-              delegate,
-            },
-            runningMode: "VIDEO",
-            numFaces: 1,
-            outputFacialTransformationMatrixes: true,
-          });
-        } catch (_) {}
+          const vision = await FilesetResolver.forVisionTasks(wasm);
+          for (const delegate of ["GPU", "CPU"]) {
+            try {
+              return await FaceLandmarker.createFromOptions(vision, {
+                baseOptions: {
+                  modelAssetBuffer: modelBuffer,
+                  delegate,
+                },
+                runningMode: "VIDEO",
+                numFaces: 1,
+                outputFacialTransformationMatrixes: true,
+              });
+            } catch (e) {
+              lastErr = e;
+            }
+          }
+        } catch (e) {
+          lastErr = e;
+        }
       }
-      throw new Error("MediaPipe 無法啟動");
+      throw new Error(lastErr?.message || "MediaPipe 無法啟動");
     }
 
     async function initThree() {
