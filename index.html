@@ -69,9 +69,19 @@
   </div>
 
   <script>
+    // Android：Scene Viewer 只有空間定位，改走面部 AR 頁
+    const ua = navigator.userAgent;
+    const isAndroid = /Android/i.test(ua);
+    if (isAndroid && !location.pathname.includes("android-face")) {
+      location.replace("android-face.html");
+    }
+
     const url = location.href.split("#")[0];
     document.getElementById("qr").src =
       "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=" + encodeURIComponent(url);
+    if (isAndroid) {
+      document.querySelector(".hint").textContent = "Android 會自動用面部定位模式";
+    }
   </script>
 </body>
 </html>
