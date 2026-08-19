@@ -1,9 +1,9 @@
 {
   "modelUrl": "face-blue-out-b.glb",
-  "scaleMultiplier": 2.8,
+  "scaleMultiplier": 3.2,
   "offsetX": 0,
-  "offsetY": 0.02,
-  "offsetZ": 0.15,
+  "offsetY": 0.05,
+  "offsetZ": 0,
   "rotationXDeg": -90,
   "rotationYDeg": 180,
   "rotationZDeg": 0
