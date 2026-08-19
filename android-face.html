@@ -113,12 +113,14 @@
     async function initThree() {
       renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, premultipliedAlpha: true });
       renderer.setClearColor(0x000000, 0);
-      resize();
 
       scene = new THREE.Scene();
       // 正交相機 = 畫面座標，模型才能貼在臉上
       camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.01, 10);
       camera.position.z = 2;
+
+      // 必須先有 camera 再 resize（否則會 Cannot set properties of undefined）
+      resize();
 
       scene.add(new THREE.AmbientLight(0xffffff, 1.1));
       const key = new THREE.DirectionalLight(0xffffff, 0.9);
@@ -146,9 +148,9 @@
     }
 
     function resize() {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      if (!renderer) return;
+      if (!renderer || !camera) return;
+      const w = window.innerWidth || 1;
+      const h = window.innerHeight || 1;
       renderer.setSize(w, h, false);
       const aspect = w / h;
       if (aspect >= 1) {
