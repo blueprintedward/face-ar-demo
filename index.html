@@ -4,84 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Face Blue Out — AR</title>
-  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+  <script>
+    (function () {
+      var ua = navigator.userAgent;
+      if (/Android/i.test(ua)) {
+        location.replace("android-face.html");
+        return;
+      }
+      if (/iPhone|iPad|iPod/i.test(ua)) {
+        location.replace("ios.html");
+        return;
+      }
+    })();
+  </script>
   <style>
-    :root { --bg: #0b0b0b; --fg: #f3f3f3; --accent: #2f6dff; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; background: var(--bg); color: var(--fg);
-      font-family: "SF Pro Text", "PingFang TC", system-ui, sans-serif; }
-    model-viewer {
-      width: 100%; height: 100%;
-      background: radial-gradient(ellipse at 50% 28%, #1a1a24, #0b0b0b 70%);
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      background: #0b0b0b; color: #f3f3f3; font-family: system-ui, sans-serif;
+      text-align: center; padding: 24px;
     }
-    .panel {
-      position: fixed; inset: auto 16px 16px 16px;
-      display: flex; gap: 12px; align-items: flex-end; justify-content: space-between;
-      pointer-events: none;
+    a {
+      display: inline-block; margin: 8px; padding: 14px 22px;
+      border-radius: 12px; background: #2f6dff; color: #fff;
+      text-decoration: none; font-weight: 700;
     }
-    .qr-wrap {
-      pointer-events: auto;
-      background: rgba(0,0,0,.72); backdrop-filter: blur(8px);
-      border-radius: 14px; padding: 10px; text-align: center;
-    }
-    .qr-wrap img { width: 120px; height: 120px; display: block; border-radius: 6px; background: #fff; }
-    .qr-wrap p { margin-top: 6px; font-size: 11px; opacity: .7; }
-    .hint {
-      pointer-events: none; max-width: 220px; text-align: right;
-      font-size: 13px; line-height: 1.4; opacity: .75;
-      padding-bottom: 8px;
-    }
-    @media (max-width: 600px) {
-      .qr-wrap { display: none; }
-      .hint { max-width: none; text-align: center; width: 100%; }
-    }
+    p { opacity: .7; max-width: 420px; line-height: 1.5; }
   </style>
 </head>
 <body>
-  <model-viewer
-    id="mv"
-    src="face-blue-out-b.glb"
-    ios-src="face-blue-out-b.usdz"
-    poster="thumb.jpg"
-    alt="Face blue out b"
-    ar
-    ar-modes="webxr scene-viewer quick-look"
-    ar-scale="auto"
-    camera-controls
-    touch-action="pan-y"
-    shadow-intensity="1"
-    exposure="1"
-  >
-    <button slot="ar-button" style="
-      position:absolute; left:50%; transform:translateX(-50%); bottom:72px;
-      appearance:none; border:0; border-radius:14px; padding:14px 28px;
-      font-size:16px; font-weight:700; color:#fff; background:var(--accent); cursor:pointer;">
-      開啟 AR
-    </button>
-  </model-viewer>
-
-  <div class="panel">
-    <div class="qr-wrap">
-      <img id="qr" alt="QR code" width="120" height="120" />
-      <p>掃碼開 AR<br/>iOS / Android</p>
-    </div>
-    <p class="hint">同一 QR：iPhone 用 USDZ，Android 用 GLB</p>
+  <div>
+    <h1>Face Blue Out AR</h1>
+    <p>用手機掃 QR 會自動分流。桌面請選平台：</p>
+    <a href="ios.html">iOS（Quick Look）</a>
+    <a href="android-face.html">Android（面部定位）</a>
   </div>
-
-  <script>
-    // Android：Scene Viewer 只有空間定位，改走面部 AR 頁
-    const ua = navigator.userAgent;
-    const isAndroid = /Android/i.test(ua);
-    if (isAndroid && !location.pathname.includes("android-face")) {
-      location.replace("android-face.html");
-    }
-
-    const url = location.href.split("#")[0];
-    document.getElementById("qr").src =
-      "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=" + encodeURIComponent(url);
-    if (isAndroid) {
-      document.querySelector(".hint").textContent = "Android 會自動用面部定位模式";
-    }
-  </script>
 </body>
 </html>
