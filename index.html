@@ -3,40 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Face Blue Out — AR</title>
-  <script>
-    (function () {
-      var ua = navigator.userAgent;
-      if (/Android/i.test(ua)) {
-        location.replace("android-face.html");
-        return;
-      }
-      if (/iPhone|iPad|iPod/i.test(ua)) {
-        location.replace("ios.html");
-        return;
-      }
-    })();
-  </script>
+  <title>Grassland Small — AR</title>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
   <style>
-    body {
-      margin: 0; min-height: 100vh; display: grid; place-items: center;
-      background: #0b0b0b; color: #f3f3f3; font-family: system-ui, sans-serif;
-      text-align: center; padding: 24px;
+    :root { --bg: #0b0b0b; --accent: #2f6dff; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: var(--bg); font-family: system-ui, sans-serif; }
+    model-viewer {
+      width: 100%; height: 100%;
+      background: radial-gradient(ellipse at 50% 28%, #1a1a24, #0b0b0b 70%);
     }
-    a {
-      display: inline-block; margin: 8px; padding: 14px 22px;
-      border-radius: 12px; background: #2f6dff; color: #fff;
-      text-decoration: none; font-weight: 700;
+    .badge {
+      position: fixed; top: 14px; left: 14px; z-index: 2;
+      background: rgba(0,0,0,.65); color: #fff; padding: 8px 12px;
+      border-radius: 999px; font-size: 12px; font-weight: 700;
     }
-    p { opacity: .7; max-width: 420px; line-height: 1.5; }
   </style>
 </head>
 <body>
-  <div>
-    <h1>Face Blue Out AR</h1>
-    <p>用手機掃 QR 會自動分流。桌面請選平台：</p>
-    <a href="ios.html">iOS（Quick Look）</a>
-    <a href="android-face.html">Android（面部定位）</a>
-  </div>
+  <div class="badge">iOS: Quick Look · Android: Scene Viewer</div>
+  <model-viewer
+    src="grassland-small.glb"
+    ios-src="grassland-small.usdz"
+    poster="thumb.jpg"
+    alt="Grassland Small"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    ar-scale="auto"
+    camera-controls
+    touch-action="pan-y"
+    shadow-intensity="1"
+    exposure="1"
+  >
+    <button slot="ar-button" style="position:absolute; left:50%; transform:translateX(-50%); bottom:72px; appearance:none; border:0; border-radius:14px; padding:14px 28px; font-size:16px; font-weight:700; color:#fff; background:var(--accent); cursor:pointer;">
+      開啟 AR
+    </button>
+  </model-viewer>
 </body>
 </html>
