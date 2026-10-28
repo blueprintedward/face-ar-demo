@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <title>Face01 AR — 面部投影</title>
+  <title>Face01 AR</title>
   <script>
     (function () {
       var ua = navigator.userAgent || "";
       if (/Android/i.test(ua)) {
-        location.replace("android-face.html?v=face01");
+        location.replace("android-face.html?v=face01-space");
         return;
       }
       if (/iPhone|iPad|iPod/i.test(ua)) {
-        location.replace("ios.html?v=face01");
+        location.replace("ios.html?v=face01-space");
         return;
       }
     })();
@@ -36,9 +36,9 @@
 <body>
   <div>
     <h1>Face01 AR</h1>
-    <p>同一個 QR：iPhone 用 USDZ，Android 用前置鏡頭面部追蹤。</p>
-    <a href="ios.html?v=face01">iOS（Quick Look）</a>
-    <a href="android-face.html?v=face01">Android（面部定位）</a>
+    <p>同一個 QR：iPhone 用 USDZ，Android 用 GLB 空間 AR（放地板／桌面）。</p>
+    <a href="ios.html?v=face01-space">iOS（Quick Look）</a>
+    <a href="android-face.html?v=face01-space">Android（空間 AR）</a>
     <div>
       <img class="qr" id="qr" alt="QR" />
     </div>
