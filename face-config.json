@@ -1,3 +1,10 @@
 {
-  "modelUrl": "grassland-small.glb"
+  "modelUrl": "face01-ar-03.glb?v=face01",
+  "scaleMultiplier": 1.4,
+  "offsetX": 0,
+  "offsetY": 0.06,
+  "offsetZ": 0,
+  "rotationXDeg": 0,
+  "rotationYDeg": 0,
+  "rotationZDeg": 0
 }
